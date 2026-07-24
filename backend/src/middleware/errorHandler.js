@@ -28,7 +28,12 @@ export const errorHandler = (err, req, res, next) => {
       error: "The website could not be found",
     });
   }
-
+    if (err.message === "Origin not allowed by CORS") {
+    return res.status(403).json({
+        success: false,
+        error: "Request origin is not allowed",
+    });
+    }
   return res.status(500).json({
     success: false,
     error: "Unable to analyze this website",
