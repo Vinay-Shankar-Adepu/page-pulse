@@ -13,14 +13,27 @@ const allowedOrigins = [
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
         return callback(null, true);
       }
 
+      const isAllowedOrigin = allowedOrigins.includes(origin);
+
+      const isVercelOrigin =
+        /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(origin);
+
+      if (isAllowedOrigin || isVercelOrigin) {
+        return callback(null, true);
+      }
+
+      console.error("Blocked CORS origin:", origin);
       return callback(new Error("Origin not allowed by CORS"));
     },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
   })
 );
+
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {
