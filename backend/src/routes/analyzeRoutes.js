@@ -1,8 +1,8 @@
 import express from "express";
-import { analyzePage } from "../controllers/analyzeController.js";
+import { analyzePageController } from "../controllers/analyzeController.js";
 
 const router = express.Router();
 
-router.post("/", analyzePage);
+router.post("/", analyzePageController);
 
 export default router;

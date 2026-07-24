@@ -1,4 +1,6 @@
-export const analyzePage = async (req, res, next) => {
+import { analyzePage } from "../services/pageAnalyzer.js";
+
+export const analyzePageController = async (req, res, next) => {
   try {
     const { url } = req.body;
 
@@ -9,10 +11,11 @@ export const analyzePage = async (req, res, next) => {
       });
     }
 
-    return res.status(200).json({
+    const report = await analyzePage(url);
+
+    return res.json({
       success: true,
-      message: "Analysis endpoint is working",
-      url,
+      data: report,
     });
   } catch (error) {
     next(error);
